@@ -12,11 +12,15 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
+	String inputFile = null;
 	for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-i")) {
                 if (i + 1 < args.length) {
-                    String inputFile = args[i + 1];
+                    inputFile = args[i + 1];
                     break;
+		}
+	    }
+	}
         try {
             logger.info("**** Reading the maze from file " + inputFile);
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
