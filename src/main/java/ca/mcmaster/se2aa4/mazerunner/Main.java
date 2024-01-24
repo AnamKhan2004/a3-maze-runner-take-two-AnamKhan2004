@@ -1,10 +1,9 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.lang.module.Configuration;
 
 public class Main {
 
@@ -12,34 +11,46 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
-	String inputFile = null;
-	for (int i = 0; i < args.length; i++) {
+
+        String inputFile = null;
+        String givenPath = null;
+
+        boolean checkPath = false;
+
+        for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-i")) {
                 if (i + 1 < args.length) {
                     inputFile = args[i + 1];
-                    break;
-		}
-	    }
-	}
+                }
+            } else if (args[i].equals("-p")) {
+                checkPath = true;
+                if (i + 1 < args.length) {
+                    givenPath = args[i + 1];
+                }
+            }
+        }
+
+        Maze maze = null;
         try {
             logger.info("**** Reading the maze from file " + inputFile);
-            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        logger.info("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        logger.info("PASS ");
-                    }
-                }
-                logger.info(System.lineSeparator());
+            maze = new Maze(inputFile);
+
+            if (checkPath){
+                logger.info("**** Checking path");
+                logger.info("Given Path: " + givenPath);
+                logger.info("PATH CHECKED");
+                logger.info("Path is valid = " + maze.checkedPath);
+                logger.info("** End of MazeRunner");
             }
-        } catch(Exception e) {
+            else {
+                logger.info("**** Computing path");
+                logger.info("PATH COMPUTED");
+                logger.info("Path = " + maze.generatedPath);
+                logger.info("** End of MazeRunner");
+            }
+        } catch (Exception e) {
             logger.error("/!\\ An error has occured /!\\");
+            System.exit(1);
         }
-        logger.info("**** Computing path");
-        logger.info("PATH NOT COMPUTED");
-        logger.info("** End of MazeRunner");
     }
 }
