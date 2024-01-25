@@ -15,23 +15,21 @@ public class Main {
 
         boolean checkPath = false;
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-i")) {
-                if (i + 1 < args.length) {
-                    inputFile = args[i + 1];
-                }
-            } else if (args[i].equals("-p")) {
-                checkPath = true;
-                if (i + 1 < args.length) {
-                    givenPath = args[i + 1];
+        try {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("-i")) {
+                    if (i + 1 < args.length) {
+                        inputFile = args[i + 1];
+                    }
+                } else if (args[i].equals("-p")) {
+                    checkPath = true;
+                    if (i + 1 < args.length) {
+                        givenPath = args[i + 1];
+                    }
                 }
             }
-        }
-
-        Maze maze = null;
-        try {
             logger.info("**** Reading the maze from file " + inputFile);
-            maze = new Maze(inputFile);
+            Maze maze = new Maze(inputFile);
 
             if (checkPath){
                 logger.info("**** Checking path");
