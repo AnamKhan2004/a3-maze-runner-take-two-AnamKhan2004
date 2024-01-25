@@ -42,7 +42,6 @@ public class Maze {
             }
             mazeList.add(row);
         }
-        System.out.println(mazeList);
         return mazeList;
     }
 }
