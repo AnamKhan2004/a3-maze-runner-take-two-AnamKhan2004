@@ -22,7 +22,6 @@ public class Path {
 
     private static int[] findEntry(ArrayList<ArrayList<Integer>> mazeArray){
         int numRows = mazeArray.size();
-        int numCols = mazeArray.get(0).size();
 
         int[] entry = new int[2];
         entry[0] = 0;
@@ -32,7 +31,7 @@ public class Path {
                 break;
             }
         }
-
+        System.out.println(Arrays.toString(entry));
         return entry;
     }
 
@@ -48,6 +47,7 @@ public class Path {
                 break;
             }
         }
+        System.out.println(Arrays.toString(exit));
         return exit;
     }
 

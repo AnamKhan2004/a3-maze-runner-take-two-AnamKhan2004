@@ -35,8 +35,14 @@ public class Maze {
                     row.add(0);
                 }
             }
+            if (!mazeList.isEmpty()){
+                while (row.size() < mazeList.get(0).size()){
+                    row.add(0);
+                }
+            }
             mazeList.add(row);
         }
+        System.out.println(mazeList);
         return mazeList;
     }
 }
