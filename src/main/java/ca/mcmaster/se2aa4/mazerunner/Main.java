@@ -41,7 +41,7 @@ public class Main {
             else {
                 logger.info("**** Computing path");
                 logger.info("PATH COMPUTED");
-                logger.info("Path = " + maze.generatedPath);
+                logger.info("Canonical Path = " + maze.generatedPath);
                 logger.info("** End of MazeRunner");
             }
         } catch (Exception e) {
