@@ -14,9 +14,9 @@ public class Maze {
     public String generatedPath;
     public boolean checkedPath;
 
-    public Maze(String inputFile) throws IOException {
+    public Maze(String inputFile, String givenPath) throws IOException {
         ArrayList<ArrayList<Integer>> mazeArr = readMaze(inputFile);
-        Path path = new Path(mazeArr);
+        Path path = new Path(mazeArr, givenPath);
         this.generatedPath = path.generatedPath;
         this.checkedPath = path.checkedPath;
     }

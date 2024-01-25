@@ -9,9 +9,9 @@ public class Path {
     public String generatedPath;
     public boolean checkedPath;
 
-    public Path(ArrayList<ArrayList<Integer>> mazeArr) {
+    public Path(ArrayList<ArrayList<Integer>> mazeArr, String givenPath) {
         this.generatedPath = generatePath(mazeArr);
-        this.checkedPath = checkPath(mazeArr);
+        this.checkedPath = checkPath(mazeArr, givenPath);
     }
 
     private static String generatePath(ArrayList<ArrayList<Integer>> mazeArray){
@@ -169,7 +169,26 @@ public class Path {
         return direction;
     }
 
-    private static boolean checkPath(ArrayList<ArrayList<Integer>> mazeArray){
-        return true;
+    private static boolean checkPath(ArrayList<ArrayList<Integer>> mazeArray, String givenPath){
+        if (givenPath.equals("empty")){
+            return false;
+        }
+        int[] entry = findEntry(mazeArray);
+        int[] exit = findExit(mazeArray);
+        int[] pos = entry;
+        char givenChar;
+        Direction direction = Direction.EAST;
+
+        for (int i=0; i<givenPath.length(); i++){
+            givenChar = givenPath.charAt(i);
+            if (isValidMove(mazeArray, pos, nextPos(pos, direction, String.valueOf(givenChar)))){
+                if (String.valueOf(givenChar).equals("F")){
+                    pos = nextPos(pos, direction, "F");
+                }else{
+                    direction = nextDir(direction, String.valueOf(givenChar));
+                }
+            }
+        }
+        return Arrays.equals(pos, exit);
     }
 }

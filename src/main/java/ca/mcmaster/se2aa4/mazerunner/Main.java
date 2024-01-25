@@ -11,7 +11,7 @@ public class Main {
         logger.info("** Starting Maze Runner");
 
         String inputFile = null;
-        String givenPath = null;
+        String givenPath = "empty";
 
         boolean checkPath = false;
 
@@ -29,7 +29,7 @@ public class Main {
                 }
             }
             logger.info("**** Reading the maze from file " + inputFile);
-            Maze maze = new Maze(inputFile);
+            Maze maze = new Maze(inputFile, givenPath);
 
             if (checkPath){
                 logger.info("**** Checking path");
