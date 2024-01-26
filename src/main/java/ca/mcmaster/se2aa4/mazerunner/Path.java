@@ -6,11 +6,13 @@ import java.util.Objects;
 
 public class Path {
 
-    public String generatedPath;
+    public String generatedCanonicalPath;
+    public String generatedFactorizedPath;
     public boolean checkedPath;
 
     public Path(ArrayList<ArrayList<Integer>> mazeArr, String givenPath) {
-        this.generatedPath = generatePath(mazeArr);
+        this.generatedCanonicalPath = generatePath(mazeArr);
+        this.generatedFactorizedPath = convertToFactorized(generatePath(mazeArr));
         this.checkedPath = checkPath(mazeArr, givenPath);
     }
 
@@ -193,5 +195,26 @@ public class Path {
             }
         }
         return Arrays.equals(pos, exit);
+    }
+
+    private static String convertToFactorized(String canonical){
+        StringBuilder factorized = new StringBuilder();
+
+        char currentChar = canonical.charAt(0);
+        int count = 1;
+
+        for (int i = 1; i < canonical.length(); i++) {
+            char nextChar = canonical.charAt(i);
+
+            if (nextChar == currentChar) {
+                count++;
+            } else {
+                factorized.append(count).append(currentChar);
+                currentChar = nextChar;
+                count = 1;
+            }
+        }
+        factorized.append(count).append(currentChar);
+        return factorized.toString();
     }
 }

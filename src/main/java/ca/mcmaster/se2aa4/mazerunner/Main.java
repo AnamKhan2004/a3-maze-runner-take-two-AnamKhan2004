@@ -35,13 +35,18 @@ public class Main {
                 logger.info("**** Checking path");
                 logger.info("Given Path: " + givenPath);
                 logger.info("PATH CHECKED");
-                logger.info("Path is valid = " + maze.checkedPath);
+                if (maze.checkedPath){
+                    System.out.println("Path is valid");
+                }else{
+                    System.out.println("Path is invalid");
+                }
                 logger.info("** End of MazeRunner");
             }
             else {
                 logger.info("**** Computing path");
                 logger.info("PATH COMPUTED");
-                logger.info("Canonical Path = " + maze.generatedPath);
+                System.out.println("Canonical Path = " + maze.generatedCanonicalPath);
+                System.out.println("Factorized Path = " + maze.generatedFactorizedPath);
                 logger.info("** End of MazeRunner");
             }
         } catch (Exception e) {

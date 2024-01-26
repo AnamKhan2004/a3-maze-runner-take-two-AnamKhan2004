@@ -11,13 +11,15 @@ import java.util.ArrayList;
 public class Maze {
     private static final Logger logger = LogManager.getLogger();
 
-    public String generatedPath;
+    public String generatedCanonicalPath;
+    public String generatedFactorizedPath;
     public boolean checkedPath;
 
     public Maze(String inputFile, String givenPath) throws IOException {
         ArrayList<ArrayList<Integer>> mazeArr = readMaze(inputFile);
         Path path = new Path(mazeArr, givenPath);
-        this.generatedPath = path.generatedPath;
+        this.generatedCanonicalPath = path.generatedCanonicalPath;
+        this.generatedFactorizedPath = path.generatedFactorizedPath;
         this.checkedPath = path.checkedPath;
     }
 
