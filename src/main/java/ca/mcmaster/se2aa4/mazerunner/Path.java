@@ -37,6 +37,9 @@ public class Path {
                 path.append("L");
                 pos = nextPos(pos, direction, "F");
                 path.append("F");
+            } else{
+                direction = nextDir(direction, "L");
+                path.append("L");
             }
         }
         return path.toString();
@@ -181,12 +184,12 @@ public class Path {
 
         for (int i=0; i<givenPath.length(); i++){
             givenChar = givenPath.charAt(i);
-            if (isValidMove(mazeArray, pos, nextPos(pos, direction, String.valueOf(givenChar)))){
-                if (String.valueOf(givenChar).equals("F")){
+            if (String.valueOf(givenChar).equals("F")){
+                if (isValidMove(mazeArray, pos, nextPos(pos, direction, String.valueOf(givenChar)))){
                     pos = nextPos(pos, direction, "F");
-                }else{
-                    direction = nextDir(direction, String.valueOf(givenChar));
                 }
+            }else{
+                direction = nextDir(direction, String.valueOf(givenChar));
             }
         }
         return Arrays.equals(pos, exit);
