@@ -39,7 +39,7 @@ public class Main {
             Maze maze = new Maze(inputFile, givenPath);
 
             if (checkPath){
-                logger.info("**** Checking path");
+                logger.info("**** Checking canonical path");
                 logger.info("Given Path: " + givenPath);
                 logger.info("PATH CHECKED");
                 if (maze.checkedPath){

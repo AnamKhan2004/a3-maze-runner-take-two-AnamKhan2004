@@ -30,6 +30,8 @@ public class Path implements GeneratePath{
         this.checkedPath = checkPath(mazeArr, givenPath);
     }
 
+    // generates path by identifying entry and exit, turning right wherever possible, if not, going straight, otherwise going left. Whenever it finds a dead end, it turns left until it turns around. Thus following the right hand rule
+    // at every turn and move, it updates position, direction, and appends the string builder 'path'
     @Override
     public String generatePath(ArrayList<ArrayList<Integer>> mazeArray){
         int[] entry = findEntry(mazeArray);
@@ -91,6 +93,7 @@ public class Path implements GeneratePath{
         return exit;
     }
 
+    // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
     private static boolean isValidMove(ArrayList<ArrayList<Integer>> mazeArray, int[] pos, int[] nextPos){
         if ((0 <= nextPos[0]) && (nextPos[0] < (mazeArray.get(0)).size()) && (0 <= nextPos[1]) && (nextPos[1] < mazeArray.size())){
             if (((nextPos[0] == pos[0]) && (nextPos[1] == pos[1]+1)) || ((nextPos[0] == pos[0]) && (nextPos[1] == pos[1]-1)) || ((nextPos[1] == pos[1]) && (nextPos[0] == pos[0]+1)) || ((nextPos[1] == pos[1]) && (nextPos[0] == pos[0]-1))){
@@ -109,6 +112,7 @@ public class Path implements GeneratePath{
         WEST
     }
 
+    // checking what the new position would be after moving or turning then moving. Based on current position, current direction, and direction of turn
     private static int[] nextPos(int[] pos, Direction direction, String turn){
         int[] nextPos = new int[2];
         if (Objects.equals(turn, "F")) {
@@ -158,6 +162,7 @@ public class Path implements GeneratePath{
         return nextPos;
     }
 
+    // checking what the next direction would be after turning
     private static Direction nextDir(Direction direction, String turn){
         if (direction == Direction.EAST){
             if (turn.equals("R")){
@@ -189,6 +194,7 @@ public class Path implements GeneratePath{
         return direction;
     }
 
+    // checks path by checking if each move is valid and checking if the final position is equal to the exit
     @Override
     public boolean checkPath(ArrayList<ArrayList<Integer>> mazeArray, String givenPath){
         if (givenPath.equals("empty")){
@@ -213,6 +219,7 @@ public class Path implements GeneratePath{
         return Arrays.equals(pos, exit);
     }
 
+    // converts the canonical form of the path to factorized form
     @Override
     public String convertToFactorized(String canonical){
         StringBuilder factorized = new StringBuilder();

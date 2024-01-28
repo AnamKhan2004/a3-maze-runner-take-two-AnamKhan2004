@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.mazerunner;
 import java.util.ArrayList;
 
+// interface so that path generation algorithm can be improved in the future
 public interface GeneratePath {
     String generatedCanonicalPath();
     String generatedFactorizedPath();

@@ -24,6 +24,7 @@ public class Maze {
         this.checkedPath = path.checkedPath();
     }
 
+    // reading maze from file and saving it into an array, 0 meaning white space, 1 meaning wall
     private static ArrayList<ArrayList<Integer>> readMaze(String inputFile) throws IOException {
         ArrayList<ArrayList<Integer>> mazeList = new ArrayList<>();
 
