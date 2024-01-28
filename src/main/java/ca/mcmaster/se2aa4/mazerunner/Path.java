@@ -4,7 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Path {
+public class Path implements GeneratePath{
+    @Override
+    public String generatedCanonicalPath() {
+        return this.generatedCanonicalPath;
+    }
+
+    @Override
+    public String generatedFactorizedPath() {
+        return this.generatedFactorizedPath;
+    }
+
+    @Override
+    public boolean checkedPath() {
+        return this.checkedPath;
+    }
 
     public String generatedCanonicalPath;
     public String generatedFactorizedPath;
@@ -16,7 +30,8 @@ public class Path {
         this.checkedPath = checkPath(mazeArr, givenPath);
     }
 
-    private static String generatePath(ArrayList<ArrayList<Integer>> mazeArray){
+    @Override
+    public String generatePath(ArrayList<ArrayList<Integer>> mazeArray){
         int[] entry = findEntry(mazeArray);
         int[] exit = findExit(mazeArray);
 
@@ -174,7 +189,8 @@ public class Path {
         return direction;
     }
 
-    private static boolean checkPath(ArrayList<ArrayList<Integer>> mazeArray, String givenPath){
+    @Override
+    public boolean checkPath(ArrayList<ArrayList<Integer>> mazeArray, String givenPath){
         if (givenPath.equals("empty")){
             return false;
         }
@@ -197,7 +213,8 @@ public class Path {
         return Arrays.equals(pos, exit);
     }
 
-    private static String convertToFactorized(String canonical){
+    @Override
+    public String convertToFactorized(String canonical){
         StringBuilder factorized = new StringBuilder();
 
         char currentChar = canonical.charAt(0);

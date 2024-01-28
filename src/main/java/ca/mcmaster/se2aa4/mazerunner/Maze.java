@@ -17,10 +17,11 @@ public class Maze {
 
     public Maze(String inputFile, String givenPath) throws IOException {
         ArrayList<ArrayList<Integer>> mazeArr = readMaze(inputFile);
-        Path path = new Path(mazeArr, givenPath);
-        this.generatedCanonicalPath = path.generatedCanonicalPath;
-        this.generatedFactorizedPath = path.generatedFactorizedPath;
-        this.checkedPath = path.checkedPath;
+        GeneratePath path = new Path(mazeArr, givenPath);
+
+        this.generatedCanonicalPath = path.generatedCanonicalPath();
+        this.generatedFactorizedPath = path.generatedFactorizedPath();
+        this.checkedPath = path.checkedPath();
     }
 
     private static ArrayList<ArrayList<Integer>> readMaze(String inputFile) throws IOException {
