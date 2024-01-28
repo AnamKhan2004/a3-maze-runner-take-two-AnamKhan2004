@@ -39,7 +39,7 @@ public class Main {
             Maze maze = new Maze(inputFile, givenPath);
 
             if (checkPath){
-                logger.info("**** Checking canonical path");
+                logger.info("**** Checking canonical path from East to West");
                 logger.info("Given Path: " + givenPath);
                 logger.info("PATH CHECKED");
                 if (maze.checkedPath){
@@ -50,7 +50,7 @@ public class Main {
                 logger.info("** End of MazeRunner");
             }
             else {
-                logger.info("**** Computing path");
+                logger.info("**** Computing path from East to West");
                 logger.info("PATH COMPUTED");
                 System.out.println("Canonical Path = " + maze.generatedCanonicalPath);
                 System.out.println("Factorized Path = " + maze.generatedFactorizedPath);
