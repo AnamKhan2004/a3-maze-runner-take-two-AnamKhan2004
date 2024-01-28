@@ -3,6 +3,14 @@ package ca.mcmaster.se2aa4.mazerunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
+import java.util.Objects;
+
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
@@ -10,24 +18,24 @@ public class Main {
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
 
-        String inputFile = null;
-        String givenPath = "empty";
+        String inputFile;
+        String givenPath;
 
         boolean checkPath = false;
 
         try {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("-i")) {
-                    if (i + 1 < args.length) {
-                        inputFile = args[i + 1];
-                    }
-                } else if (args[i].equals("-p")) {
-                    checkPath = true;
-                    if (i + 1 < args.length) {
-                        givenPath = args[i + 1];
-                    }
-                }
+            Options options = new Options();
+            options.addOption("i", true, "input file");
+            options.addOption("p", true, "given path");
+            CommandLineParser parser = new DefaultParser();
+            CommandLine cmd = parser.parse(options, args);
+            inputFile = cmd.getOptionValue("i",null);
+            givenPath = cmd.getOptionValue("p","empty");
+
+            if(!Objects.equals(givenPath, "empty")){
+                checkPath = true;
             }
+
             logger.info("**** Reading the maze from file " + inputFile);
             Maze maze = new Maze(inputFile, givenPath);
 
@@ -50,7 +58,7 @@ public class Main {
                 logger.info("** End of MazeRunner");
             }
         } catch (Exception e) {
-            logger.error("/!\\ An error has occured /!\\");
+            logger.error("An error has occurred");
             System.exit(1);
         }
     }
