@@ -36,13 +36,14 @@ public class Main {
             }
 
             logger.info("**** Reading the maze from file " + inputFile);
-            Maze maze = new Maze(inputFile, givenPath);
+            Maze maze = new Maze(inputFile);
 
             if (checkPath){
+                Path path = new Path(givenPath);
                 logger.info("**** Checking canonical path from East to West");
                 logger.info("Given Path: " + givenPath);
                 logger.info("PATH CHECKED");
-                if (maze.checkedPath){
+                if (path.checkPath(maze)){
                     System.out.println("Path is valid");
                 }else{
                     System.out.println("Path is invalid");
@@ -50,10 +51,12 @@ public class Main {
                 logger.info("** End of MazeRunner");
             }
             else {
+                MazeSolver mazeSolver = new RightHandSolver();
+                Path generatedPath = mazeSolver.solve(maze);
                 logger.info("**** Computing path from East to West");
                 logger.info("PATH COMPUTED");
-                System.out.println("Canonical Path = " + maze.generatedCanonicalPath);
-                System.out.println("Factorized Path = " + maze.generatedFactorizedPath);
+                System.out.println("Canonical Path = " + generatedPath.getCanonicalPath());
+                System.out.println("Factorized Path = " + generatedPath.getFactorizedPath());
                 logger.info("** End of MazeRunner");
             }
         } catch (Exception e) {
