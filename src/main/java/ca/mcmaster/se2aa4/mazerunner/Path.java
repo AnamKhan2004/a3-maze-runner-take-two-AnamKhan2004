@@ -1,17 +1,15 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-
 public class Path {
 
     private String canonicalPath;
-    private String factorizedPath;
 
     public Path(String path) {
         this.canonicalPath = path;
-        this.factorizedPath = convertToFactorized(path);
+    }
+
+    public Path() {
+        this.canonicalPath = "";
     }
 
     // checks path by checking if each move is valid and checking if the final position is equal to the exit
@@ -28,8 +26,8 @@ public class Path {
         for (int i=0; i<canonicalPath.length(); i++){
             givenChar = canonicalPath.charAt(i);
             if (String.valueOf(givenChar).equals("F")){
-                if (maze.isValidMove(pos, pos.nextPos(direction, String.valueOf(givenChar)))){
-                    pos = pos.nextPos(direction, "F");
+                if (maze.isValidMove(pos, pos.moveFwd(direction))){
+                    pos = pos.moveFwd(direction);
                 }
             }else if (String.valueOf(givenChar).equals("R")){
                 direction = direction.lookRight();
@@ -41,14 +39,14 @@ public class Path {
     }
 
     // converts the canonical form of the path to factorized form
-    private String convertToFactorized(String canonical){
+    private String convertToFactorized(){
         StringBuilder factorized = new StringBuilder();
 
-        char currentChar = canonical.charAt(0);
+        char currentChar = canonicalPath.charAt(0);
         int count = 1;
 
-        for (int i = 1; i < canonical.length(); i++) {
-            char nextChar = canonical.charAt(i);
+        for (int i = 1; i < canonicalPath.length(); i++) {
+            char nextChar = canonicalPath.charAt(i);
 
             if (nextChar == currentChar) {
                 count++;
@@ -67,6 +65,10 @@ public class Path {
     }
 
     public String getFactorizedPath() {
-        return factorizedPath;
+        return convertToFactorized();
+    }
+
+    public void add(String s) {
+        canonicalPath = canonicalPath + s;
     }
 }

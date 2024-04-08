@@ -9,32 +9,30 @@ public class RightHandSolver implements MazeSolver {
         Position entry = maze.getEntry();
         Position exit = maze.getExit();
 
-        StringBuilder path = new StringBuilder();
+        Path path = new Path();
 
         Position pos = entry;
         Direction direction = Direction.EAST;
 
         while (!pos.equals(exit)) {
-            if (maze.isValidMove(pos, pos.nextPos(direction, "R"))) {
+            if (maze.isValidMove(pos, pos.turnR(direction))) {
                 direction = direction.lookRight();
-                path.append("R");
-                pos = pos.nextPos(direction, "F");
-                path.append("F");
-            } else if (maze.isValidMove(pos, pos.nextPos(direction, "F"))) {
-                pos = pos.nextPos(direction, "F");
-                path.append("F");
-            } else if (maze.isValidMove(pos, pos.nextPos(direction, "L"))) {
+                path.add("R");
+                pos = pos.moveFwd(direction);
+                path.add("F");
+            } else if (maze.isValidMove(pos, pos.moveFwd(direction))) {
+                pos = pos.moveFwd(direction);
+                path.add("F");
+            } else if (maze.isValidMove(pos, pos.turnL(direction))) {
                 direction = direction.lookLeft();
-                path.append("L");
-                pos = pos.nextPos(direction, "F");
-                path.append("F");
+                path.add("L");
+                pos = pos.moveFwd(direction);
+                path.add("F");
             } else {
                 direction = direction.lookLeft();
-                path.append("L");
+                path.add("L");
             }
         }
-        System.out.println(exit);
-        System.out.println(pos);
-        return new Path(path.toString());
+        return path;
     }
 }

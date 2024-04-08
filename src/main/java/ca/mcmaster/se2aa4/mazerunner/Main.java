@@ -16,6 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
 
         String inputFile;
         String givenPath;
@@ -26,8 +28,7 @@ public class Main {
             Options options = new Options();
             options.addOption("i", true, "input file");
             options.addOption("p", true, "given path");
-            CommandLineParser parser = new DefaultParser();
-            CommandLine cmd = parser.parse(options, args);
+            cmd = parser.parse(options, args);
             inputFile = cmd.getOptionValue("i",null);
             givenPath = cmd.getOptionValue("p","empty");
 
@@ -44,11 +45,10 @@ public class Main {
                 logger.info("Given Path: " + givenPath);
                 logger.info("PATH CHECKED");
                 if (path.checkPath(maze)){
-                    System.out.println("Path is valid");
+                    System.out.println("correct path");
                 }else{
-                    System.out.println("Path is invalid");
+                    System.out.println("incorrect path");
                 }
-                logger.info("** End of MazeRunner");
             }
             else {
                 MazeSolver mazeSolver = new RightHandSolver();
@@ -57,11 +57,12 @@ public class Main {
                 logger.info("PATH COMPUTED");
                 System.out.println("Canonical Path = " + generatedPath.getCanonicalPath());
                 System.out.println("Factorized Path = " + generatedPath.getFactorizedPath());
-                logger.info("** End of MazeRunner");
             }
         } catch (Exception e) {
-            logger.error("An error has occurred");
-            System.exit(1);
+            System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
+            logger.error("MazeSolver failed.  Reason: " + e.getMessage());
+            logger.error("PATH NOT COMPUTED");
         }
+        logger.info("End of MazeRunner");
     }
 }

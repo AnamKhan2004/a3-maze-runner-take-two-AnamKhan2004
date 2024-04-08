@@ -3,13 +3,14 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 
 public class Maze {
 
     private Position entry;
     private Position exit;
-    private ArrayList<ArrayList<Integer>> mazeArr;
+    private List<List<Integer>> mazeArr;
 
     public Maze(String inputFile) throws IOException {
         this.mazeArr = readMaze(inputFile);
@@ -18,13 +19,12 @@ public class Maze {
     }
 
     // reading maze from file and saving it into an array, 0 meaning white space, 1 meaning wall
-    private static ArrayList<ArrayList<Integer>> readMaze(String inputFile) throws IOException {
-        ArrayList<ArrayList<Integer>> mazeList = new ArrayList<>();
-
+    private static List<List<Integer>> readMaze(String inputFile) throws IOException {
+        List<List<Integer>> mazeList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String line;
         while ((line = reader.readLine()) != null) {
-            ArrayList<Integer> row = new ArrayList<>();
+            List<Integer> row = new ArrayList<>();
             for (int idx = 0; idx < line.length(); idx++) {
                 if (line.charAt(idx) == '#') {
                     row.add(1);
@@ -71,23 +71,40 @@ public class Maze {
         return new Position(exitX, exitY);
     }
 
+    // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
+    public boolean isValidMove(Position pos, Position nextPos){
+        if (inMaze(nextPos)){
+            if (!isWall(nextPos)){
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWall (Position pos) {
+        if (mazeArr.get(pos.getY()).get(pos.getX()) == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean inMaze(Position pos) {
+        return 0 <= pos.getX() && pos.getX() < getSizeX() && 0 <= pos.getY() && pos.getY() < getSizeY();
+    }
+
+    private int getSizeX () {
+        return mazeArr.getFirst().size();
+    }
+
+    private int getSizeY () {
+        return mazeArr.size();
+    }
+
     public Position getEntry() {
         return entry;
     }
 
     public Position getExit(){
         return exit;
-    }
-
-    // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
-    public boolean isValidMove(Position pos, Position nextPos){
-        if ((0 <= nextPos.getX()) && (nextPos.getX() < (mazeArr.get(0)).size()) && (0 <= nextPos.getY()) && (nextPos.getY() < mazeArr.size())){
-            if (((nextPos.getX() == pos.getX()) && (nextPos.getY() == pos.getY()+1)) || ((nextPos.getX() == pos.getX()) && (nextPos.getY() == pos.getY()-1)) || ((nextPos.getY() == pos.getY()) && (nextPos.getX() == pos.getX()+1)) || ((nextPos.getY() == pos.getY()) && (nextPos.getX() == pos.getX()-1))){
-                if (((mazeArr.get(nextPos.getY())).get(nextPos.getX())) == 0){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
