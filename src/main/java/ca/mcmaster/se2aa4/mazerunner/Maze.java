@@ -11,11 +11,13 @@ public class Maze {
     private Position entry;
     private Position exit;
     private List<List<Integer>> mazeArr;
+    private MazeGraph mazeGraph;
 
     public Maze(String inputFile) throws IOException {
         this.mazeArr = readMaze(inputFile);
         this.entry = findEntry();
         this.exit = findExit();
+        this.mazeGraph = new MazeGraph(this, mazeArr);
     }
 
     // reading maze from file and saving it into an array, 0 meaning white space, 1 meaning wall
@@ -71,6 +73,32 @@ public class Maze {
         return new Position(exitX, exitY);
     }
 
+    // checks path by checking if each move is valid and checking if the final position is equal to the exit
+    public boolean checkPath(Path path){
+        String cPath = path.getCanonicalPath();
+
+        if (cPath.equals("empty")){
+            return false;
+        }
+        Position pos = getEntry();
+        char givenChar;
+        Direction direction = Direction.EAST;
+
+        for (int i=0; i<cPath.length(); i++){
+            givenChar = cPath.charAt(i);
+            if (String.valueOf(givenChar).equals("F")){
+                if (isValidMove(pos, pos.moveFwd(direction))){
+                    pos = pos.moveFwd(direction);
+                }
+            }else if (String.valueOf(givenChar).equals("R")){
+                direction = direction.lookRight();
+            }else if (String.valueOf(givenChar).equals("L")){
+                direction = direction.lookLeft();
+            }
+        }
+        return (pos.equals(getExit()));
+    }
+
     // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
     public boolean isValidMove(Position pos, Position nextPos){
         if (inMaze(nextPos)){
@@ -81,22 +109,22 @@ public class Maze {
         return false;
     }
 
-    public boolean isWall (Position pos) {
+    private boolean isWall (Position pos) {
         if (mazeArr.get(pos.getY()).get(pos.getX()) == 0) {
             return false;
         }
         return true;
     }
 
-    public boolean inMaze(Position pos) {
+    private boolean inMaze(Position pos) {
         return 0 <= pos.getX() && pos.getX() < getSizeX() && 0 <= pos.getY() && pos.getY() < getSizeY();
     }
 
-    private int getSizeX () {
+    public int getSizeX () {
         return mazeArr.getFirst().size();
     }
 
-    private int getSizeY () {
+    public int getSizeY () {
         return mazeArr.size();
     }
 
@@ -106,5 +134,9 @@ public class Maze {
 
     public Position getExit(){
         return exit;
+    }
+
+    public MazeGraph getMazeGraph() {
+        return mazeGraph;
     }
 }

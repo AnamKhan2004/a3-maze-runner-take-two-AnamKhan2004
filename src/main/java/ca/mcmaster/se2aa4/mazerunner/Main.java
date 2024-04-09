@@ -1,14 +1,9 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
-
-import java.util.Objects;
 
 public class Main {
 
@@ -17,52 +12,79 @@ public class Main {
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
         CommandLineParser parser = new DefaultParser();
+
         CommandLine cmd = null;
-
-        String inputFile;
-        String givenPath;
-
-        boolean checkPath = false;
-
         try {
-            Options options = new Options();
-            options.addOption("i", true, "input file");
-            options.addOption("p", true, "given path");
-            cmd = parser.parse(options, args);
-            inputFile = cmd.getOptionValue("i",null);
-            givenPath = cmd.getOptionValue("p","empty");
+            cmd = parser.parse(getParserOptions(), args);
+            String filePath = cmd.getOptionValue('i');
+            Maze maze = new Maze(filePath);
 
-            if(!Objects.equals(givenPath, "empty")){
-                checkPath = true;
-            }
-
-            logger.info("**** Reading the maze from file " + inputFile);
-            Maze maze = new Maze(inputFile);
-
-            if (checkPath){
-                Path path = new Path(givenPath);
-                logger.info("**** Checking canonical path from East to West");
-                logger.info("Given Path: " + givenPath);
-                logger.info("PATH CHECKED");
-                if (path.checkPath(maze)){
+            if (cmd.getOptionValue("p") != null) {
+                logger.info("Validating path");
+                Path path = new Path(cmd.getOptionValue("p"));
+                if (maze.checkPath(path)) {
                     System.out.println("correct path");
-                }else{
+                } else {
                     System.out.println("incorrect path");
                 }
-            }
-            else {
-                MazeSolver mazeSolver = new RightHandSolver();
-                Path generatedPath = mazeSolver.solve(maze);
-                logger.info("**** Computing path from East to West");
-                logger.info("PATH COMPUTED");
-                System.out.println("Canonical Path = " + generatedPath.getCanonicalPath());
-                System.out.println("Factorized Path = " + generatedPath.getFactorizedPath());
+            } else {
+                String method = cmd.getOptionValue("method", "righthand");
+                Path path = solveMaze(method, maze);
+                System.out.println(path.getCanonicalPath());
+                System.out.println(path.getFactorizedPath());
             }
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("MazeSolver failed.  Reason: " + e.getMessage());
             logger.error("PATH NOT COMPUTED");
         }
+
         logger.info("End of MazeRunner");
+    }
+
+    /**
+     * Solve provided maze with specified method.
+     *
+     * @param method Method to solve maze with
+     * @param maze Maze to solve
+     * @return Maze solution path
+     * @throws Exception If provided method does not exist
+     */
+    private static Path solveMaze(String method, Maze maze) throws Exception {
+        MazeSolver solver = null;
+        switch (method) {
+            case "righthand" -> {
+                logger.debug("RightHand algorithm chosen.");
+                solver = new RightHandSolver();
+            }
+            case "bfs" -> {
+                logger.debug("Tremaux algorithm chosen.");
+                solver = new BFSSolver();
+            }
+            default -> {
+                throw new Exception("Maze solving method '" + method + "' not supported.");
+            }
+        }
+
+        logger.info("Computing path");
+        return solver.solve(maze);
+    }
+
+    /**
+     * Get options for CLI parser.
+     *
+     * @return CLI parser options
+     */
+    private static Options getParserOptions() {
+        Options options = new Options();
+
+        Option fileOption = new Option("i", true, "File that contains maze");
+        fileOption.setRequired(true);
+        options.addOption(fileOption);
+
+        options.addOption(new Option("p", true, "Path to be verified in maze"));
+        options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
+
+        return options;
     }
 }

@@ -12,34 +12,12 @@ public class Path {
         this.canonicalPath = "";
     }
 
-    // checks path by checking if each move is valid and checking if the final position is equal to the exit
-    public boolean checkPath(Maze maze){
-        if (canonicalPath.equals("empty")){
-            return false;
-        }
-        Position entry = maze.getEntry();
-        Position exit = maze.getExit();
-        Position pos = entry;
-        char givenChar;
-        Direction direction = Direction.EAST;
-
-        for (int i=0; i<canonicalPath.length(); i++){
-            givenChar = canonicalPath.charAt(i);
-            if (String.valueOf(givenChar).equals("F")){
-                if (maze.isValidMove(pos, pos.moveFwd(direction))){
-                    pos = pos.moveFwd(direction);
-                }
-            }else if (String.valueOf(givenChar).equals("R")){
-                direction = direction.lookRight();
-            }else if (String.valueOf(givenChar).equals("L")){
-                direction = direction.lookLeft();
-            }
-        }
-        return (pos.equals(exit));
-    }
-
     // converts the canonical form of the path to factorized form
     private String convertToFactorized(){
+        if (canonicalPath.isEmpty()) {
+            return "";
+        }
+
         StringBuilder factorized = new StringBuilder();
 
         char currentChar = canonicalPath.charAt(0);
