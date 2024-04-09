@@ -17,20 +17,50 @@ public class Main {
         try {
             cmd = parser.parse(getParserOptions(), args);
             String filePath = cmd.getOptionValue('i');
-            Maze maze = new Maze(filePath);
 
-            if (cmd.getOptionValue("p") != null) {
-                logger.info("Validating path");
-                Path path = new Path(cmd.getOptionValue("p"));
-                if (maze.checkPath(path)) {
-                    System.out.println("correct path");
+            if (cmd.getOptionValue("baseline") != null) {
+                double startTimeLoadMaze = System.currentTimeMillis();
+                Maze maze = new Maze(filePath);
+                double endTimeLoadMaze = System.currentTimeMillis();
+                double elapsedTimeLoadMaze = endTimeLoadMaze - startTimeLoadMaze;
+
+                System.out.printf("Time spent loading maze from file (in ms): %.2f\n", elapsedTimeLoadMaze);
+
+                String method = cmd.getOptionValue("method", "bfs");
+                double startTimeExploreMazeMethod = System.currentTimeMillis();
+                Path pathMethod = solveMaze(method, maze);
+                double endTimeExploreMazeMethod = System.currentTimeMillis();
+                double elapsedTimeExploreMazeMethod = endTimeExploreMazeMethod - startTimeExploreMazeMethod;
+
+                System.out.printf("Time spent exploring the maze using the provided -method (in ms): %.2f\n", elapsedTimeExploreMazeMethod);
+
+                String baseline = cmd.getOptionValue("baseline", "bfs");
+                double startTimeExploreMazeBaseline = System.currentTimeMillis();
+                Path pathBaseline = solveMaze(baseline, maze);
+                double endTimeExploreMazeBaseline = System.currentTimeMillis();
+                double elapsedTimeExploreMazeBaseline = endTimeExploreMazeBaseline - startTimeExploreMazeBaseline;
+
+                System.out.printf("Time spent exploring the maze using the provided -baseline (in ms): %.2f\n", elapsedTimeExploreMazeBaseline);
+
+                double speedUp = (double) pathBaseline.getCanonicalPath().length() / pathMethod.getCanonicalPath().length();
+
+                System.out.printf("Improvement on the path as a speedup: %.1f\n", speedUp);
+            }
+            else {
+                Maze maze = new Maze(filePath);
+                if (cmd.getOptionValue("p") != null) {
+                    logger.info("Validating path");
+                    Path path = new Path(cmd.getOptionValue("p"));
+                    if (maze.checkPath(path)) {
+                        System.out.println("correct path");
+                    } else {
+                        System.out.println("incorrect path");
+                    }
                 } else {
-                    System.out.println("incorrect path");
+                    String method = cmd.getOptionValue("method", "righthand");
+                    Path path = solveMaze(method, maze);
+                    System.out.println(path.getCanonicalPath());
                 }
-            } else {
-                String method = cmd.getOptionValue("method", "righthand");
-                Path path = solveMaze(method, maze);
-                System.out.println(path.getCanonicalPath());
             }
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
@@ -83,6 +113,7 @@ public class Main {
 
         options.addOption(new Option("p", true, "Path to be verified in maze"));
         options.addOption(new Option("method", true, "Specify which path computation algorithm will be used"));
+        options.addOption(new Option("baseline", true, "Comparison baseline"));
 
         return options;
     }
