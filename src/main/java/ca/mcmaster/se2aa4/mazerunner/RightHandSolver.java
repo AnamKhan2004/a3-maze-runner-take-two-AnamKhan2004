@@ -15,15 +15,15 @@ public class RightHandSolver implements MazeSolver {
         Direction direction = Direction.EAST;
 
         while (!pos.equals(exit)) {
-            if (maze.isValidMove(pos, pos.turnR(direction))) {
+            if (maze.isValidMove(pos.turnR(direction))) {
                 direction = direction.lookRight();
                 path.add("R");
                 pos = pos.moveFwd(direction);
                 path.add("F");
-            } else if (maze.isValidMove(pos, pos.moveFwd(direction))) {
+            } else if (maze.isValidMove(pos.moveFwd(direction))) {
                 pos = pos.moveFwd(direction);
                 path.add("F");
-            } else if (maze.isValidMove(pos, pos.turnL(direction))) {
+            } else if (maze.isValidMove(pos.turnL(direction))) {
                 direction = direction.lookLeft();
                 path.add("L");
                 pos = pos.moveFwd(direction);

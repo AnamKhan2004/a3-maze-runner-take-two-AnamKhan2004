@@ -21,7 +21,7 @@ public class Maze {
     }
 
     // reading maze from file and saving it into an array, 0 meaning white space, 1 meaning wall
-    private static List<List<Integer>> readMaze(String inputFile) throws IOException {
+    private List<List<Integer>> readMaze(String inputFile) throws IOException {
         List<List<Integer>> mazeList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String line;
@@ -87,7 +87,7 @@ public class Maze {
         for (int i=0; i<cPath.length(); i++){
             givenChar = cPath.charAt(i);
             if (String.valueOf(givenChar).equals("F")){
-                if (isValidMove(pos, pos.moveFwd(direction))){
+                if (isValidMove(pos.moveFwd(direction))){
                     pos = pos.moveFwd(direction);
                 }
             }else if (String.valueOf(givenChar).equals("R")){
@@ -100,7 +100,7 @@ public class Maze {
     }
 
     // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
-    public boolean isValidMove(Position pos, Position nextPos){
+    public boolean isValidMove(Position nextPos){
         if (inMaze(nextPos)){
             if (!isWall(nextPos)){
                     return true;

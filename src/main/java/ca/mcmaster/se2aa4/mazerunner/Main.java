@@ -31,7 +31,6 @@ public class Main {
                 String method = cmd.getOptionValue("method", "righthand");
                 Path path = solveMaze(method, maze);
                 System.out.println(path.getCanonicalPath());
-                System.out.println(path.getFactorizedPath());
             }
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
@@ -58,7 +57,7 @@ public class Main {
                 solver = new RightHandSolver();
             }
             case "bfs" -> {
-                logger.debug("Tremaux algorithm chosen.");
+                logger.debug("Breadth First Search algorithm chosen.");
                 solver = new BFSSolver();
             }
             default -> {

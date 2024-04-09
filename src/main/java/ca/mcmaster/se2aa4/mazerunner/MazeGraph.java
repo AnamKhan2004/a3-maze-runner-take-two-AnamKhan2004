@@ -3,6 +3,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.util.*;
 
 public class MazeGraph {
+
     private LinkedList<Integer>[] adj; // Adjacency list
 
     private int rows;
@@ -18,10 +19,6 @@ public class MazeGraph {
         this.adj = createAdjList(mazeArr);
     }
 
-    private boolean isValid(int row, int col) {
-        return (row >= 0) && (row < rows) && (col >= 0) && (col < cols);
-    }
-
     private LinkedList<Integer>[] createAdjList(List<List<Integer>> mazeArr) {
         int v = rows * cols;
         LinkedList<Integer>[] adjList = new LinkedList[v];
@@ -31,30 +28,35 @@ public class MazeGraph {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 if (mazeArr.get(i).get(j) == 0) {
-                    if (isValid(i+1, j) && mazeArr.get(i+1).get(j) == 0) {
-                        int currentNode = i * cols + j;
-                        int neighborNode = (i+1) * cols + j;
+                    int currentNode = i * cols + j;
+                    if (isValidVertex(i + 1, j, mazeArr)) {
+                        int neighborNode = (i + 1) * cols + j;
                         adjList[currentNode].add(neighborNode);
                     }
-                    if (isValid(i-1, j) && mazeArr.get(i-1).get(j) == 0) {
-                        int currentNode = i * cols + j;
-                        int neighborNode = (i-1) * cols + j;
+                    if (isValidVertex(i - 1, j, mazeArr)) {
+                        int neighborNode = (i - 1) * cols + j;
                         adjList[currentNode].add(neighborNode);
                     }
-                    if (isValid(i, j+1) && mazeArr.get(i).get(j+1) == 0) {
-                        int currentNode = i * cols + j;
-                        int neighborNode = i * cols + (j+1);
+                    if (isValidVertex(i, j + 1, mazeArr)) {
+                        int neighborNode = i * cols + (j + 1);
                         adjList[currentNode].add(neighborNode);
                     }
-                    if (isValid(i, j-1) && mazeArr.get(i).get(j-1) == 0) {
-                        int currentNode = i * cols + j;
-                        int neighborNode = i * cols + (j-1);
+                    if (isValidVertex(i, j - 1, mazeArr)) {
+                        int neighborNode = i * cols + (j - 1);
                         adjList[currentNode].add(neighborNode);
                     }
                 }
             }
         }
         return adjList;
+    }
+
+    private boolean isValidVertex(int x, int y, List<List<Integer>> mazeArr) {
+        return (isValid(x, y) && mazeArr.get(x).get(y) == 0);
+    }
+
+    private boolean isValid(int row, int col) {
+        return (row >= 0) && (row < rows) && (col >= 0) && (col < cols);
     }
 
     public int getEntry() {
