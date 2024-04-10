@@ -17,7 +17,6 @@ public class Path {
         if (canonicalPath.isEmpty()) {
             return "";
         }
-
         StringBuilder factorized = new StringBuilder();
 
         char currentChar = canonicalPath.charAt(0);
@@ -38,6 +37,7 @@ public class Path {
         return factorized.toString();
     }
 
+    // getters
     public String getCanonicalPath() {
         return canonicalPath;
     }
@@ -46,6 +46,7 @@ public class Path {
         return convertToFactorized();
     }
 
+    // adds a string to the path
     public void add(String s) {
         canonicalPath = canonicalPath + s;
     }

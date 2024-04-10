@@ -4,6 +4,7 @@ import java.util.*;
 
 public class BFSSolver implements MazeSolver{
 
+    // solves maze using maze graph from maze and using bfs
     @Override
     public Path solve(Maze maze){
         MazeGraph mazeGraph = maze.getMazeGraph();
@@ -11,6 +12,7 @@ public class BFSSolver implements MazeSolver{
         return constructPath(pathNodes, mazeGraph);
     }
 
+    // breadth first search that gives list of nodes as path
     private List<Integer> breadthFirstSearch(MazeGraph mazeGraph) {
         int entry = mazeGraph.getEntry();
         int exit = mazeGraph.getExit();
@@ -42,6 +44,7 @@ public class BFSSolver implements MazeSolver{
         return null;
     }
 
+    // constructs path for bfs
     private List<Integer> constructPathNodes(int[] parent, int exit) {
         List<Integer> path = new ArrayList<>();
         for (int at = exit; at != -1; at = parent[at]) {
@@ -51,6 +54,7 @@ public class BFSSolver implements MazeSolver{
         return path;
     }
 
+    // constructs path from bfs using list of nodes
     private Path constructPath(List<Integer> pathNodes, MazeGraph mazeGraph) {
         Direction direction = Direction.EAST;
         Path path = new Path();
@@ -74,6 +78,7 @@ public class BFSSolver implements MazeSolver{
         return path;
     }
 
+    // these methods check if a node is forward, to the left, or to the right of the current node
     private boolean nodeF(Integer prevNode, Integer node, Direction direction, int cols) {
         switch (direction){
             case EAST -> {

@@ -44,6 +44,7 @@ public class Maze {
         return mazeList;
     }
 
+    // methods to find entry and exit of maze
     private Position findEntry() {
         int numRows = mazeArr.size();
 
@@ -99,7 +100,7 @@ public class Maze {
         return (pos.equals(getExit()));
     }
 
-    // checking if the move is valid by checking if it is within the maze, adjacent to the current position, and not a wall
+    // checking if the move is valid by checking if it is within the maze and not a wall
     public boolean isValidMove(Position nextPos){
         if (inMaze(nextPos)){
             if (!isWall(nextPos)){
@@ -109,6 +110,7 @@ public class Maze {
         return false;
     }
 
+    // checking if there is a wall at a certain position
     private boolean isWall (Position pos) {
         if (mazeArr.get(pos.getY()).get(pos.getX()) == 0) {
             return false;
@@ -116,10 +118,12 @@ public class Maze {
         return true;
     }
 
+    // checking if a position is in the maze
     private boolean inMaze(Position pos) {
         return 0 <= pos.getX() && pos.getX() < getSizeX() && 0 <= pos.getY() && pos.getY() < getSizeY();
     }
 
+    // getters
     public int getSizeX () {
         return mazeArr.getFirst().size();
     }

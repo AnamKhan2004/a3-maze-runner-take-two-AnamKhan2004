@@ -18,6 +18,7 @@ public class Main {
             cmd = parser.parse(getParserOptions(), args);
             String filePath = cmd.getOptionValue('i');
 
+            // executes benchmark mode
             if (cmd.getOptionValue("baseline") != null) {
                 double startTimeLoadMaze = System.currentTimeMillis();
                 Maze maze = new Maze(filePath);
@@ -57,7 +58,7 @@ public class Main {
                         System.out.println("incorrect path");
                     }
                 } else {
-                    String method = cmd.getOptionValue("method", "righthand");
+                    String method = cmd.getOptionValue("method", "bfs");
                     Path path = solveMaze(method, maze);
                     System.out.println(path.getCanonicalPath());
                 }

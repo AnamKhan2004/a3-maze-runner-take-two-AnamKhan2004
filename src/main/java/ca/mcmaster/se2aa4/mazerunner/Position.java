@@ -30,7 +30,6 @@ public class Position {
     }
 
     // checking what the new position would be after moving or turning then moving. Based on current position, current direction, and direction of turn
-
     public Position moveFwd(Direction direction){
         int nextPos0 = x;
         int nextPos1 = y;

@@ -19,6 +19,7 @@ public class MazeGraph {
         this.adj = createAdjList(mazeArr);
     }
 
+    // creating an adjacency list representation of the maze as a graph
     private LinkedList<Integer>[] createAdjList(List<List<Integer>> mazeArr) {
         int v = rows * cols;
         LinkedList<Integer>[] adjList = new LinkedList[v];
@@ -51,6 +52,7 @@ public class MazeGraph {
         return adjList;
     }
 
+    // checking if vertexes are valid by ensuring they are ' ' and are within the maze
     private boolean isValidVertex(int x, int y, List<List<Integer>> mazeArr) {
         return (isValid(x, y) && mazeArr.get(x).get(y) == 0);
     }
@@ -59,6 +61,7 @@ public class MazeGraph {
         return (row >= 0) && (row < rows) && (col >= 0) && (col < cols);
     }
 
+    // getters
     public int getEntry() {
         return entry;
     }
