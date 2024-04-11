@@ -44,7 +44,7 @@ The delivered program at the end of this assignment should use the following fla
 - `-i MAZE_FILE`: specifies the filename to be used;
 - `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze
 - `-method {bfs, righthand}`: specifies which path computation method to use. (default is bfs)
-- `-baseline {bfs, righthand}: specifies the baseline to execute benchmark mode
+- `-baseline {bfs, righthand}`: specifies the baseline to execute benchmark mode
 
 #### Examples
 
