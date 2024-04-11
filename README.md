@@ -87,4 +87,4 @@ Improvement on the path as a speedup: 1.0
 
 #### Authors
 - Anam Khan
-- Alexandre Lachance (provided parts of starter code from: https://github.com/2AA4-W24/a1-solution)
+- Alexandre Lachance (parts of starter code from: https://github.com/2AA4-W24/a1-solution)
